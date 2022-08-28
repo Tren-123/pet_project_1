@@ -1,2 +1,2 @@
 venv/
-blogcalc/**/__pycache__
+**/__pycache__
