@@ -1,8 +1,6 @@
 from distutils.command.upload import upload
 from email.utils import localtime
 from django.db import models
-import time
-from datetime import datetime
 
 # Create your models here.
 
