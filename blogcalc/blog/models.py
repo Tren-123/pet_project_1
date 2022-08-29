@@ -28,9 +28,9 @@ class Blog_post(models.Model):
     content = models.TextField(help_text="Enter your text here")
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
-    date_of_origin = datetime(*time.localtime()[0:6]) 
+    date_of_origin = models.DateTimeField(auto_now=True)
     blogger = models.ForeignKey(Blogger, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.title}, {self.date_of_origin}"
+        return f"{self.title}, {str(self.date_of_origin)[0:19]}"
