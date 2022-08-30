@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from email.utils import localtime
+from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -13,6 +14,9 @@ class Blogger(models.Model):
     #Avatar field not completed. Should set sizes for storage images and directory for storage images.
     #It must be web sever or cloud(now it local dir), database storage only path to storage dir
     avatar = models.ImageField(upload_to="blog/images/avatars", blank=True, null=True, help_text="Upload your profile avatar")
+
+    class Meta:
+        verbose_name = "Blogger info"
 
     def __str__(self):
         """String for representing the Model object."""

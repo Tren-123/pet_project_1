@@ -17,5 +17,6 @@ admin.site.register(User, UserAdmin)
 
 class Blog_postAdmin(admin.ModelAdmin):
     list_display = ("title", "blogger", "date_of_origin", "date_of_update", "likes", "dislikes", )
+    list_filter = ("blogger", "date_of_origin", )
 
 admin.site.register(Blog_post, Blog_postAdmin)
