@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 def index(request):
     """View functions of index page of site"""
-    last_5_blogger = User.objects.all()
-    last_5_blog_posts = Blog_post.objects.all()
+    last_5_blogger = User.objects.filter(is_staff = 0).order_by("-date_joined")[: 5]
+    last_5_blog_posts = Blog_post.objects.all().order_by("-date_of_origin")[: 5]
     
     context = {
         'last_5_blogger': last_5_blogger,

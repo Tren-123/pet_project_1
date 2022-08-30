@@ -6,7 +6,13 @@
   <h2>Dynamic content</h2>
   <p>Last updates on site</p>
   <ul>
-    <li><strong>Welcome to new users:</strong> {{ last_5_blogger }}</li>
-    <li><strong>Last blog posts:</strong> {{ last_5_blog_posts }}</li>
+    <strong>Welcome to new users:</strong> 
+    {% for blogger in last_5_blogger %}
+    <li>{{ blogger.username }}</li>
+    {% endfor %}
+    <strong>Last blog posts:</strong> 
+    {% for post in last_5_blog_posts %}
+    <li> {{ post.title }}, {{ post.date_of_origin }}, ({{ post.blogger }}) </li>
+    {% endfor %}
   </ul>
 {% endblock %}
