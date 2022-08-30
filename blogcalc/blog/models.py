@@ -24,7 +24,8 @@ class Blog_post(models.Model):
     content = models.TextField(help_text="Enter your text here")
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
-    date_of_origin = models.DateTimeField(auto_now=True)
+    date_of_origin = models.DateTimeField(auto_now_add=True)
+    date_of_update = models.DateTimeField(auto_now=True)
     blogger = models.ForeignKey(Blogger, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
