@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Blog Home</h1>
+  <p>Welcome to test website, a website developed by <em>Dmitry and Pavel</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>Last updates on site</p>
+  <ul>
+    <li><strong>Welcome to new users:</strong> {{ last_5_blogger }}</li>
+    <li><strong>Last blog posts:</strong> {{ last_5_blog_posts }}</li>
+  </ul>
+{% endblock %}
