@@ -1,18 +1,26 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Blog Home</h1>
+  <h1>Blog Home Page</h1>
   <p>Welcome to test website, a website developed by <em>Dmitry and Pavel</em>!</p>
   <h2>Dynamic content</h2>
   <p>Last updates on site</p>
-  <ul>
-    <strong>Welcome to new users:</strong> 
-    {% for blogger in last_n_blogger %}
-    <li>{{ blogger.username }}</li>
-    {% endfor %}
-    <strong>Last blog posts:</strong> 
-    {% for post in last_n_blog_posts %}
-    <li> {{ post.title }}, {{ post.date_of_origin }}, ({{ post.blogger }}) </li>
-    {% endfor %}
-  </ul>
+    <ul>
+      <strong>Welcome to new users:</strong> 
+    {% if last_n_blogger %}
+      {% for blogger in last_n_blogger %}
+        <li>{{ blogger.username }}</li>
+        {% endfor %}
+    {% else %}
+    <p>There are no new users :(</p>
+    {% endif %}
+      <strong>Last blog posts:</strong> 
+      {% if last_n_blog_posts %}
+        {% for post in last_n_blog_posts %}
+          <li> {{ post.title }}, {{ post.date_of_origin }}, ({{ post.blogger }}) </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+    <p>There are no new posts :(</p>
+    {% endif %}
 {% endblock %}
