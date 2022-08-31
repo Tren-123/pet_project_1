@@ -1,17 +1,15 @@
 from django.shortcuts import render
-from .models import Blogger, Blog_post
-from django.contrib.auth.models import User
-
-# Create your views here.
+from .blog_services import get_query_with_new_n_bloggers, \
+                         get_query_with_new_n_blog_posts
 
 def index(request):
     """View functions of index page of site"""
-    last_5_blogger = User.objects.filter(is_staff = 0).order_by("-date_joined")[: 5]
-    last_5_blog_posts = Blog_post.objects.all().order_by("-date_of_origin")[: 5]
-    
+    last_n_blogger = get_query_with_new_n_bloggers(5)
+    last_n_blog_posts = get_query_with_new_n_blog_posts(5)
+
     context = {
-        'last_5_blogger': last_5_blogger,
-        'last_5_blog_posts': last_5_blog_posts,
+        'last_n_blogger': last_n_blogger,
+        'last_n_blog_posts': last_n_blog_posts,
     }
 
     # Render the HTML template index.html with the data in the context variable

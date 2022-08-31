@@ -7,11 +7,11 @@
   <p>Last updates on site</p>
   <ul>
     <strong>Welcome to new users:</strong> 
-    {% for blogger in last_5_blogger %}
+    {% for blogger in last_n_blogger %}
     <li>{{ blogger.username }}</li>
     {% endfor %}
     <strong>Last blog posts:</strong> 
-    {% for post in last_5_blog_posts %}
+    {% for post in last_n_blog_posts %}
     <li> {{ post.title }}, {{ post.date_of_origin }}, ({{ post.blogger }}) </li>
     {% endfor %}
   </ul>
