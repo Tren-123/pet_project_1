@@ -9,7 +9,7 @@
       <strong>Welcome to new users:</strong> 
     {% if last_n_blogger %}
       {% for blogger in last_n_blogger %}
-        <li>{{ blogger.username }}</li>
+        <li><a href="{{ blogger.blogger.get_absolute_url }}">{{ blogger.username }}</a></li>
         {% endfor %}
     {% else %}
     <p>There are no new users :(</p>

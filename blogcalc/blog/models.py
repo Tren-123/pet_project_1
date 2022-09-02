@@ -23,17 +23,19 @@ class Blogger(models.Model):
     def __str__(self):
         """ String for representing the Model object. """
         return self.user.username
-    #Work not correct. TO FIX
+
     def get_absolute_url(self):
         """ Return url to instance """
-        return reverse('blogger', kwargs={'pk' : self.pk})
-   
-    """dont work as excpected. need to fix
+        return reverse('blogger', kwargs={'pk' : self.user_id})
+    #TO FIX if both create user and add blogger info integrity error raised
     @receiver(post_save, sender=User)
     def create_user_blogger(sender, instance, created, **kwargs):
         if created:
-            Blogger.objects.create(user=instance)"""
-
+            Blogger.objects.create(user=instance)
+    
+    @receiver(post_save, sender=User)
+    def save_user_blogger(sender, instance, **kwargs):
+        instance.blogger.save()
 
 
 class Blog_post(models.Model):
