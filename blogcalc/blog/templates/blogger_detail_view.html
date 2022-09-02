@@ -2,6 +2,8 @@
 
 {% block content %}
   <h1>Blogger</h1>
-  {{ user.username }}
-  {{ blogger_info }}
+  Username: {{ user.username }}
+  Name: {{ user.last_name }}, {{ user.first_name }}
+  Bio: {{ user.blogger.short_bio }}
+  Date of birth: {{ user.blogger.date_of_birth }}
 {% endblock %}

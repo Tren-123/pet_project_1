@@ -2,8 +2,7 @@ from django.shortcuts import render
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
-                         get_query_for_all_posts, \
-                         get_extra_context_for_blogger_info
+                         get_query_for_all_posts
 from django.views import generic
 from django.contrib.auth.models import User
 from .models import Blog_post
@@ -34,5 +33,4 @@ class Blog_postListView(generic.ListView):
 
 class BloggerDetailView(generic.DetailView):
     model = User
-    # don't work: extra_context = get_extra_context_for_blogger_info(self.kwargs["pk"])
     template_name = "blogger_detail_view.html"

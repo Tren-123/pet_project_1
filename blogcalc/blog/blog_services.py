@@ -17,7 +17,3 @@ def get_query_for_all_bloggers():
 def get_query_for_all_posts():
     """ return query of all posts """
     return Blog_post.objects.all().order_by("-date_of_origin")
-
-def get_extra_context_for_blogger_info(id_of_user: int):
-    """ return extra context to add in Blogger Detail View: blogger info, blogger date of birth and blogger avatar"""
-    return {"blogger_info" : Blogger.objects.filter(user_id = id_of_user)[0].short_bio}
