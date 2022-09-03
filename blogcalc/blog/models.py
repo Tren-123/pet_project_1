@@ -11,7 +11,7 @@ from django.dispatch import receiver
 class Blogger(models.Model):
     """ Model representing a blogger info """
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    date_of_bitrh = models.DateField(blank=True, null=True, help_text="Enter your date of birth")
+    date_of_birth = models.DateField(blank=True, null=True, help_text="Enter your date of birth")
     short_bio = models.TextField(max_length=1000, blank=True, null=True, help_text="Enter your short bio")
     #Avatar field not completed. Should set sizes for storage images and directory for storage images.
     #It must be web sever or cloud(now it local dir), database storage only path to storage dir

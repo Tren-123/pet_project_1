@@ -1,9 +1,37 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Blogger</h1>
-  Username: {{ user.username }}
-  Name: {{ user.last_name }}, {{ user.first_name }}
-  Bio: {{ user.blogger.short_bio }}
-  Date of birth: {{ user.blogger.date_of_birth }}
+  <h1>{{ user.username }}</h1>
+  <div style="margin-left:20px;margin-top:20px">
+  {% if user.first_name or  user.last_name  %}
+    Name: {{ user.last_name }} {{ user.first_name }}<br> 
+  {% endif %}
+  {% if user.blogger.date_of_birth %}
+    Date of birth: {{ user.blogger.date_of_birth }}<br> 
+  {% endif %}
+  {% if user.blogger.short_bio %}
+    Bio: {{ user.blogger.short_bio }} <br> 
+  {% endif %}
+  </div>
+  <p>
+  <h4>Posts</h4>
+  <div>
+    {% if user.blogger.blog_post_set.all %}
+    {% for post in user.blogger.blog_post_set.all %}
+    <ul>
+    <li> <a href="">{{ post.title }}</a></li>
+    </ul>
+    {% endfor %}
+    {% else %}
+    <div style="margin-left:20px;margin-top:20px">
+    This blogger hasn't written any posts yet :( </div>
+    {% endif %}
+  </p>
+  <h4>Comments</h4>
+  <div style="margin-left:20px;margin-top:20px">
+    This blogger hasn't written any comments yet :( </div>
 {% endblock %}
+
+
+
+
