@@ -54,4 +54,4 @@ class Blog_post(models.Model):
     
     def get_absolute_url(self):
         """ Return url to instance """
-        return reverse('post', kwargs={'pk' : self.pk})
+        return reverse('post', kwargs={'pk' : self.id})

@@ -4,6 +4,7 @@ from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_for_all_bloggers, \
                          get_query_for_all_posts
 from django.views import generic
+from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.models import User
 from .models import Blog_post
 
@@ -31,6 +32,16 @@ class Blog_postListView(generic.ListView):
     queryset = get_query_for_all_posts()
     paginate_by = 10
 
-class BloggerDetailView(generic.DetailView):
+class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
     model = User
     template_name = "blogger_detail_view.html"
+    paginate_by = 2
+    #TO FIX, this need to paginator but don't work
+    def get_context_data(self, **kwargs):
+        object_list = Blog_post.objects.filter(blogger_id=self.get_object().id)
+        context = super(BloggerDetailView, self).get_context_data(object_list=object_list, **kwargs)
+        return context
+
+class BlogPostDetailView(generic.DetailView):
+    model = Blog_post
+    template_name = "blog_post_detail_view.html"

@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ blog_post.title }}</h1>
+  <div style="margin-left:20px;margin-top:20px">
+    {{ blog_post.date_of_origin }} <a href="{% url 'blogger' blog_post.blogger.user_id %}"> {{ blog_post.blogger.user.username }}</a> <br> 
+  </div>
+  <p>
+  <h4>{{ blog_post.title }}</h4>
+  <div>
+    <div style="margin-left:20px;margin-top:20px">
+    {{ blog_post.content }}
+  </div>
+  </p>
+  <h4>Comments</h4>
+  <div style="margin-left:20px;margin-top:20px">
+    Comment here </div>
+{% endblock %}
+
+
+
+
