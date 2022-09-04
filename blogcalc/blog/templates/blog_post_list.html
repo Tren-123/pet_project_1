@@ -2,10 +2,13 @@
 
 {% block content %}
   <h1>All posts</h1>
+  {% if object_list %}
   <ul>
     {% for post in object_list %}
-    <li>{{ post.title }}, {{ post.date_of_origin }}, ({{ post.blogger }}) </li>
+    <li><a href="{% url 'post' post.id %}"> {{ post.title }}</a>, {{ post.date_of_origin }}, 
+        (<a href="{% url 'blogger' post.blogger.user_id %}"> {{ post.blogger }}</a>) </li>
     {% endfor %}
+    {% endif %}
     <div class="pagination">
       <span class="step-links">
           {% if page_obj.has_previous %}

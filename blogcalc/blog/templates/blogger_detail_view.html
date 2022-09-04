@@ -15,13 +15,29 @@
   </div>
   <p>
   <h4>Posts</h4>
+  {{ object_list }}
   <div>
     {% if user.blogger.blog_post_set.all %}
     {% for post in user.blogger.blog_post_set.all %}
     <ul>
-    <li> <a href="">{{ post.title }}</a></li>
+    <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
     </ul>
     {% endfor %}
+    <div class="pagination">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+  
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+  
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>
     {% else %}
     <div style="margin-left:20px;margin-top:20px">
     This blogger hasn't written any posts yet :( </div>
