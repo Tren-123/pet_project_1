@@ -19,6 +19,12 @@
           <li><a href="{% url 'bloggers' %}">All bloggers</a></li>
           <li><a href="{% url 'posts' %}">All blog posts</a></li>
           <li><a href="">All calculation posts</a></li>
+          {% if user.is_authenticated %}
+            <li><br>User: <a href="{% url 'blogger' user.id %}">{{ user.username }}</a></li>
+            <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+          {% else %}
+            <li><br><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+          {% endif %}
         </ul>
      {% endblock %}
       </div>
