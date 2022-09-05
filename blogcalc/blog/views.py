@@ -35,12 +35,11 @@ class Blog_postListView(generic.ListView):
 class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
     model = User
     template_name = "blogger_detail_view.html"
-    paginate_by = 2
-    #TO FIX, this need to paginator but don't work
     def get_context_data(self, **kwargs):
         object_list = Blog_post.objects.filter(blogger_id=self.get_object().id)
         context = super(BloggerDetailView, self).get_context_data(object_list=object_list, **kwargs)
         return context
+    paginate_by = 10
 
 class BlogPostDetailView(generic.DetailView):
     model = Blog_post

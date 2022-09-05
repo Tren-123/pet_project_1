@@ -1,6 +1,3 @@
-from distutils.command.upload import upload
-from email.utils import localtime
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -46,7 +43,7 @@ class Blog_post(models.Model):
     dislikes = models.PositiveIntegerField(default=0)
     date_of_origin = models.DateTimeField(auto_now_add=True)
     date_of_update = models.DateTimeField(auto_now=True)
-    blogger = models.ForeignKey(Blogger, null=True, on_delete=models.SET_NULL)
+    blogger = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         """ String for representing the Model object. """

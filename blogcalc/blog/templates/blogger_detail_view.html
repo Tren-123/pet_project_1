@@ -15,10 +15,9 @@
   </div>
   <p>
   <h4>Posts</h4>
-  {{ object_list }}
   <div>
-    {% if user.blogger.blog_post_set.all %}
-    {% for post in user.blogger.blog_post_set.all %}
+    {% if object_list %}
+    {% for post in object_list %}
     <ul>
     <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
     </ul>

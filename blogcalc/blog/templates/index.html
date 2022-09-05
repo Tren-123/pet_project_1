@@ -18,7 +18,7 @@
       {% if last_n_blog_posts %}
         {% for post in last_n_blog_posts %}
           <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>, {{ post.date_of_origin }}, 
-            (<a href="{% url 'blogger' post.blogger.user_id %}">{{ post.blogger }}</a>) </li>
+            (<a href="{% url 'blogger' post.blogger_id %}">{{ post.blogger }}</a>) </li>
         {% endfor %}
       </ul>
       {% else %}
