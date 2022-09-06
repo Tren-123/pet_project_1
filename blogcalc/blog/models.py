@@ -39,11 +39,11 @@ class Blog_post(models.Model):
     """ Model representing blog posts related for bloggers """
     title = models.CharField(max_length=100, help_text="Enter a title that briefly reflects the essence of the post")
     content = models.TextField(help_text="Enter your text here")
-    likes = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name="blog_post_mm")
     dislikes = models.PositiveIntegerField(default=0)
     date_of_origin = models.DateTimeField(auto_now_add=True)
     date_of_update = models.DateTimeField(auto_now=True)
-    blogger = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    blogger = models.ForeignKey(User, related_name= "blog_post", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         """ String for representing the Model object. """
@@ -52,3 +52,7 @@ class Blog_post(models.Model):
     def get_absolute_url(self):
         """ Return url to instance """
         return reverse('post', kwargs={'pk' : self.id})
+    
+    def total_likes(self):
+        """" Return amount of likes of post """
+        return self.likes.count()

@@ -3,7 +3,8 @@
 {% block content %}
   <h1>{{ blog_post.title }}</h1>
   <div style="margin-left:20px;margin-top:20px">
-    {{ blog_post.date_of_origin }} <a href="{% url 'blogger' blog_post.blogger_id %}"> {{ blog_post.blogger }}</a> <br> 
+    {{ blog_post.date_of_origin }} <a href="{% url 'blogger' blog_post.blogger_id %}"> 
+      {{ blog_post.blogger }}</a> <br> 
   </div>
   <p>
   <h4>{{ blog_post.title }}</h4>
@@ -15,6 +16,13 @@
   <h4>Comments</h4>
   <div style="margin-left:20px;margin-top:20px">
     Comment here </div>
+  <hr>
+  <br>
+  <form action="{% url 'like_post' blog_post.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit", name="post_id", 
+    value="{{ blog_post.id }}", class="btn btn-primary btn-sm">Like</button> - {{ total_likes }} like{{ total_likes|pluralize }}
+  </form>
 {% endblock %}
 
 

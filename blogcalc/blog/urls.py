@@ -8,4 +8,5 @@ urlpatterns = [
     path("posts/", views.Blog_postListView.as_view(), name="posts"),
     path("blogger/<int:pk>", views.BloggerDetailView.as_view(), name="blogger"),
     path("post/<int:pk>", views.BlogPostDetailView.as_view(), name="post"),
+    path("like/<int:pk>", views.LikeView, name="like_post"),
     ]

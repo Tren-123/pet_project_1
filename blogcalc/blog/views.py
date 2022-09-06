@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
@@ -7,6 +7,9 @@ from django.views import generic
 from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.models import User
 from .models import Blog_post
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 
 def index(request):
@@ -45,3 +48,14 @@ class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
 class BlogPostDetailView(generic.DetailView):
     model = Blog_post
     template_name = "blog_post_detail_view.html"
+    def get_context_data(self, **kwargs):
+        stuf = get_object_or_404(Blog_post, id=self.kwargs["pk"])
+        total_likes = stuf.total_likes()
+        context = super().get_context_data(**kwargs)
+        context["total_likes"] = total_likes
+        return context
+
+def LikeView(request, pk):
+    post = get_object_or_404(Blog_post, id=request.POST.get("post_id"))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse("post", args=[str(pk)]))
