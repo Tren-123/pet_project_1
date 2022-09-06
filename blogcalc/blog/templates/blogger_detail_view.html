@@ -1,16 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>{{ user.username }}</h1>
+  <h1>{{ blogger.get_username }}</h1>
   <div style="margin-left:20px;margin-top:20px">
-  {% if user.first_name or  user.last_name  %}
-    Name: {{ user.last_name }} {{ user.first_name }}<br> 
+  {% if blogger.first_name or  blogger.last_name  %}
+    Name: {{ blogger.last_name }} {{ blogger.first_name }}<br> 
   {% endif %}
-  {% if user.blogger.date_of_birth %}
-    Date of birth: {{ user.blogger.date_of_birth }}<br> 
+  {% if blogger.blogger.date_of_birth %}
+    Date of birth: {{ blogger.blogger.date_of_birth }}<br> 
   {% endif %}
-  {% if user.blogger.short_bio %}
-    Bio: {{ user.blogger.short_bio }} <br> 
+  {% if blogger.blogger.short_bio %}
+    Bio: {{ blogger.blogger.short_bio }} <br> 
   {% endif %}
   </div>
   <p>
