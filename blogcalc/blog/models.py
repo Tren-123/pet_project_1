@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -39,8 +40,6 @@ class Blog_post(models.Model):
     """ Model representing blog posts related for bloggers """
     title = models.CharField(max_length=100, help_text="Enter a title that briefly reflects the essence of the post")
     content = models.TextField(help_text="Enter your text here")
-    likes = models.ManyToManyField(User, related_name="blog_post_mm")
-    dislikes = models.PositiveIntegerField(default=0)
     date_of_origin = models.DateTimeField(auto_now_add=True)
     date_of_update = models.DateTimeField(auto_now=True)
     blogger = models.ForeignKey(User, related_name= "blog_post", null=True, on_delete=models.SET_NULL)
@@ -53,6 +52,25 @@ class Blog_post(models.Model):
         """ Return url to instance """
         return reverse('post', kwargs={'pk' : self.id})
     
-    def total_likes(self):
-        """" Return amount of likes of post """
-        return self.likes.count()
+    #def total_likes(self):
+     #   """" Return amount of likes of post """
+      #  return self.like_dislikes.count()
+
+
+class Likes_dislikes(models.Model):
+    """ Model representing like/dislike reaction of specific user to specific post """
+    blogger = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    blog_post = models.ForeignKey(Blog_post, on_delete=models.CASCADE)
+    dislike = -1
+    nothing = 0
+    like = 1
+    likes_dislike_choises = [
+        (dislike, "Dislike"),
+        (nothing, "No reaction"),
+        (like, "Like"),
+    ]
+    like_dislike = models.SmallIntegerField(choices=likes_dislike_choises, default=0)
+
+    def __str__(self):
+        """ String for representing the Model object. """
+        return f"{self.blog_post}, {self.blogger}, {self.get_like_dislike_display()}"

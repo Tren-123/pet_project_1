@@ -48,14 +48,14 @@ class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
 class BlogPostDetailView(generic.DetailView):
     model = Blog_post
     template_name = "blog_post_detail_view.html"
-    def get_context_data(self, **kwargs):
-        stuf = get_object_or_404(Blog_post, id=self.kwargs["pk"])
-        total_likes = stuf.total_likes()
-        context = super().get_context_data(**kwargs)
-        context["total_likes"] = total_likes
-        return context
+    #def get_context_data(self, **kwargs):
+     #   stuf = get_object_or_404(Blog_post, id=self.kwargs["pk"])
+      #  total_likes = stuf.total_likes()
+       # context = super().get_context_data(**kwargs)
+        #context["total_likes"] = total_likes
+        #return context
 
 def LikeView(request, pk):
     post = get_object_or_404(Blog_post, id=request.POST.get("post_id"))
-    post.likes.add(request.user)
+    post.likes_dislikes.add(request.user)
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
