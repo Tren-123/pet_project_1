@@ -1,4 +1,4 @@
-from .models import Blog_post, Blogger
+from .models import Blog_post, Blogger, Likes_dislikes
 from django.contrib.auth.models import User
 
 
@@ -17,3 +17,11 @@ def get_query_for_all_bloggers():
 def get_query_for_all_posts():
     """ return query of all posts """
     return Blog_post.objects.all().order_by("-date_of_origin")
+
+def get_total_like(id_of_post):
+    """ return total likes from specific user for specific post  """
+    return Likes_dislikes.objects.filter(blog_post_id = id_of_post, like_dislike = 1).count()
+
+def get_total_dislike(id_of_post):
+    """ return total dislikes from specific user for specific post  """
+    return Likes_dislikes.objects.filter(blog_post_id = id_of_post, like_dislike = -1).count()

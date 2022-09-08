@@ -51,10 +51,6 @@ class Blog_post(models.Model):
     def get_absolute_url(self):
         """ Return url to instance """
         return reverse('post', kwargs={'pk' : self.id})
-    
-    #def total_likes(self):
-     #   """" Return amount of likes of post """
-      #  return self.like_dislikes.count()
 
 
 class Likes_dislikes(models.Model):

@@ -23,6 +23,12 @@
     <button type="submit", name="post_id", 
     value="{{ blog_post.id }}", class="btn btn-primary btn-sm">Like</button> - {{ total_likes }} like{{ total_likes|pluralize }}
   </form>
+  <br>
+  <form action="{% url 'dislike_post' blog_post.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit", name="post_id", 
+    value="{{ blog_post.id }}", class="btn btn-primary btn-sm">Dislike</button> - {{ total_dislikes }} dislike{{ total_dislikes|pluralize }}
+  </form>
 {% endblock %}
 
 

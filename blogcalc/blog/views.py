@@ -2,11 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
-                         get_query_for_all_posts
+                         get_query_for_all_posts, \
+                         get_total_like, get_total_dislike
+                        
 from django.views import generic
 from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.models import User
-from .models import Blog_post
+from .models import Blog_post, Likes_dislikes
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -48,14 +50,32 @@ class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
 class BlogPostDetailView(generic.DetailView):
     model = Blog_post
     template_name = "blog_post_detail_view.html"
-    #def get_context_data(self, **kwargs):
-     #   stuf = get_object_or_404(Blog_post, id=self.kwargs["pk"])
-      #  total_likes = stuf.total_likes()
-       # context = super().get_context_data(**kwargs)
-        #context["total_likes"] = total_likes
-        #return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_likes"] = get_total_like(self.object.id)
+        context["total_dislikes"] = get_total_dislike(self.object.id)
+        return context
 
 def LikeView(request, pk):
-    post = get_object_or_404(Blog_post, id=request.POST.get("post_id"))
-    post.likes_dislikes.add(request.user)
+    obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
+                                                        blogger_id = request.user.id,
+                                                        )
+    if not created:
+        if obj.like_dislike == 0:
+            obj.like_dislike = 1
+        else:
+            obj.like_dislike = 0
+        obj.save(update_fields=["like_dislike"])
+    return HttpResponseRedirect(reverse("post", args=[str(pk)]))
+
+def DislikeView(request, pk):
+    obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
+                                                        blogger_id = request.user.id,
+                                                        )
+    if not created:
+        if obj.like_dislike == 0:
+            obj.like_dislike = -1
+        else:
+            obj.like_dislike = 0
+        obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
