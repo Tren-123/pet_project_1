@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from .models import Blog_post, Likes_dislikes
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.views.generic.edit import CreateView
 
 
 def index(request):
@@ -60,22 +60,28 @@ def LikeView(request, pk):
     obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
                                                         blogger_id = request.user.id,
                                                         )
-    if not created:
-        if obj.like_dislike == 0:
-            obj.like_dislike = 1
-        else:
-            obj.like_dislike = 0
-        obj.save(update_fields=["like_dislike"])
+    if obj.like_dislike == 0:
+        obj.like_dislike = 1
+    else:
+        obj.like_dislike = 0
+    obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
 
 def DislikeView(request, pk):
     obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
                                                         blogger_id = request.user.id,
                                                         )
-    if not created:
-        if obj.like_dislike == 0:
-            obj.like_dislike = -1
-        else:
-            obj.like_dislike = 0
-        obj.save(update_fields=["like_dislike"])
+    if obj.like_dislike == 0:
+        obj.like_dislike = -1
+    else:
+        obj.like_dislike = 0
+    obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
+
+class BlogPostCreate(CreateView):
+    model = Blog_post
+    template_name = "blog_post_create_view.html"
+    fields = ["title", "content"]
+    def form_valid(self, form):
+        form.instance.blogger = self.request.user
+        return super().form_valid(form)
