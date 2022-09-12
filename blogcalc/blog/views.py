@@ -12,6 +12,8 @@ from .models import Blog_post, Likes_dislikes
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -78,7 +80,7 @@ def DislikeView(request, pk):
     obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
 
-class BlogPostCreate(CreateView):
+class BlogPostCreate(LoginRequiredMixin, CreateView):
     model = Blog_post
     template_name = "blog_post_create_view.html"
     fields = ["title", "content"]
