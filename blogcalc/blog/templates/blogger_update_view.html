@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Update blogger info</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+    {{ user_form }}
+    </table>
+    <button name="save_user_info">Save</button>
+  </form>
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+    {{ blogger_form }}
+    </table>
+    <button name="save_blogger_info">Save</button>
+  </form>
+  <br>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button name="return_to_blogger_view">Return</button>
+  </form>
+{% endblock %}
+
+
+
+

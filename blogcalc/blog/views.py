@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
@@ -8,12 +8,13 @@ from .blog_services import get_query_with_new_n_bloggers, \
 from django.views import generic
 from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.models import User
-from .models import Blog_post, Likes_dislikes
+from .models import Blog_post, Blogger, Likes_dislikes
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from .forms import UserForm, BloggerForm
 
 
 def index(request):
@@ -44,7 +45,7 @@ class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
     template_name = "blogger_detail_view.html"
     context_object_name = "blogger"
     def get_context_data(self, **kwargs):
-        object_list = Blog_post.objects.filter(blogger_id=self.get_object().id)
+        object_list = Blog_post.objects.filter(blogger_id=self.get_object().id).order_by("-date_of_origin")
         context = super(BloggerDetailView, self).get_context_data(object_list=object_list, **kwargs)
         return context
     paginate_by = 10
@@ -59,25 +60,27 @@ class BlogPostDetailView(generic.DetailView):
         return context
 
 def LikeView(request, pk):
-    obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
-                                                        blogger_id = request.user.id,
-                                                        )
-    if obj.like_dislike == 0:
-        obj.like_dislike = 1
-    else:
-        obj.like_dislike = 0
-    obj.save(update_fields=["like_dislike"])
+    if request.user.is_authenticated:
+        obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
+                                                            blogger_id = request.user.id,
+                                                            )
+        if obj.like_dislike == 0:
+            obj.like_dislike = 1
+        else:
+            obj.like_dislike = 0
+        obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
 
 def DislikeView(request, pk):
-    obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
-                                                        blogger_id = request.user.id,
-                                                        )
-    if obj.like_dislike == 0:
-        obj.like_dislike = -1
-    else:
-        obj.like_dislike = 0
-    obj.save(update_fields=["like_dislike"])
+    if request.user.is_authenticated:
+        obj, created = Likes_dislikes.objects.get_or_create(blog_post_id = request.POST.get("post_id"),
+                                                            blogger_id = request.user.id,
+                                                            )
+        if obj.like_dislike == 0:
+            obj.like_dislike = -1
+        else:
+            obj.like_dislike = 0
+        obj.save(update_fields=["like_dislike"])
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
 
 class BlogPostCreate(LoginRequiredMixin, CreateView):
@@ -87,3 +90,38 @@ class BlogPostCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.blogger = self.request.user
         return super().form_valid(form)
+    
+class BloggerUpdate(LoginRequiredMixin, generic.TemplateView):
+    template_name = "blogger_update_view.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context["user"] = user
+        context["user_form"] = UserForm(instance=user)
+        context["blogger_form"] = BloggerForm(instance=user.blogger)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # retrieve the User model instance based on authenticated user id
+        user = self.request.user
+        # create a UserForm based on user and form data
+        user_form = UserForm(instance=user, data=request.POST)
+        # retrieve the Blogger model instance based on authenticated user id
+        blogger = get_object_or_404(Blogger, user_id=self.request.user.id)
+        # create a BloggerForm based on blogger and form data
+        blogger_form = BloggerForm(instance=blogger, data=request.POST)
+        # if the save_user button is pressed
+        if 'save_user_info' in request.POST:
+            if user_form.is_bound and user_form.is_valid():
+                user_form.save()
+                return HttpResponseRedirect(reverse('blogger_update', kwargs={'pk': self.request.user.id}))
+        
+        # if the save_blogger_info button is pressed
+        elif 'save_blogger_info' in request.POST:
+            if blogger_form.is_bound and blogger_form.is_valid():
+                blogger_form.save()
+                return HttpResponseRedirect(reverse('blogger_update', kwargs={'pk': self.request.user.id}))
+
+        # if the return_to_blogger_view button is pressed
+        elif "return_to_blogger_view" in request.POST:       
+            return HttpResponseRedirect(reverse('blogger', kwargs={'pk': self.request.user.id}))

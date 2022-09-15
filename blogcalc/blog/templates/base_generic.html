@@ -20,7 +20,8 @@
           <li><a href="{% url 'posts' %}">All blog posts</a></li>
           <li><a href="">All calculation posts</a></li>
           {% if user.is_authenticated %}
-            <li><br>User: <a href="{% url 'blogger' user.id %}">{{ user.get_username }}</a></li>
+            <li><br>User: <a href="{% url 'blogger' user.id %}">{{ user.get_username }}</a>
+            (<a href="{% url 'blogger_update' user.id %}">edit</a>)</li>
             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             <li><a href="{% url 'create_post' %}"">Create blog post</a></li>
           {% else %}

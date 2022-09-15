@@ -11,4 +11,5 @@ urlpatterns = [
     path("like/<int:pk>", views.LikeView, name="like_post"),
     path("dislike/<int:pk>", views.DislikeView, name="dislike_post"),
     path("post/create", views.BlogPostCreate.as_view(), name="create_post"),
+    path("blogger/<int:pk>/update", views.BloggerUpdate.as_view(), name="blogger_update"),
     ]

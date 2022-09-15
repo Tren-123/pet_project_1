@@ -19,7 +19,7 @@
     {% if object_list %}
     {% for post in object_list %}
     <ul>
-    <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>, {{ post.date_of_origin }}</li>
     </ul>
     {% endfor %}
     <div class="pagination">
