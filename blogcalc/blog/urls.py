@@ -12,4 +12,5 @@ urlpatterns = [
     path("dislike/<int:pk>", views.DislikeView, name="dislike_post"),
     path("post/create", views.BlogPostCreate.as_view(), name="create_post"),
     path("blogger/<int:pk>/update", views.BloggerUpdate.as_view(), name="blogger_update"),
+    path("blogger/create", views.NewUserCreate, name="create_blogger"),
     ]

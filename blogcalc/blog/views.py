@@ -14,7 +14,8 @@ from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .forms import UserForm, BloggerForm
+from .forms import UserForm, BloggerForm, CreateUserForm
+from django.contrib.auth import authenticate, login
 
 
 def index(request):
@@ -125,3 +126,20 @@ class BloggerUpdate(LoginRequiredMixin, generic.TemplateView):
         # if the return_to_blogger_view button is pressed
         elif "return_to_blogger_view" in request.POST:       
             return HttpResponseRedirect(reverse('blogger', kwargs={'pk': self.request.user.id}))
+
+
+def NewUserCreate(request, *args, **kwargs):
+    #TO DO add tests for credentials
+    if request.method == 'POST' and "save" in request.POST:
+        form = CreateUserForm(request.POST)
+        new_user_username = form["username"].value()
+        new_user_password1 = form["password1"].value()
+        new_user_password2 = form["password2"].value()
+        if form.is_valid():
+            if new_user_password1 == new_user_password2:
+                user = User.objects.create_user(username=new_user_username, password=new_user_password1)
+                login(request, user)
+                return HttpResponseRedirect(reverse('blogger_update', kwargs={'pk': user.id}))
+    else:
+        form = CreateUserForm()
+    return render(request, 'blogger_create_view.html', {'form': form})
