@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Blog Home Page</h1>
-  <p>Welcome to test website, a website developed by <em>Dmitry and Pavel</em>!</p>
+  <p>Welcome to test website, a website developed by <em>Pavel</em>!</p>
   <h2>Dynamic content</h2>
   <p>Last updates on site</p>
     <ul>
@@ -17,8 +17,13 @@
       <strong>Last blog posts:</strong> 
       {% if last_n_blog_posts %}
         {% for post in last_n_blog_posts %}
+        {% if post.blogger_id %}
+        <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>, {{ post.date_of_origin }}, 
+          (<a href="{% url 'blogger' post.blogger_id %}">{{ post.blogger }}</a>) </li>
+          {% else %}
           <li> <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>, {{ post.date_of_origin }}, 
-            (<a href="{% url 'blogger' post.blogger_id %}">{{ post.blogger }}</a>) </li>
+            ({{ post.blogger }}) </li>
+          {% endif %}
         {% endfor %}
       </ul>
       {% else %}

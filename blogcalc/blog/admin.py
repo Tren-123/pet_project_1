@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Blogger, Blog_post, Likes_dislikes
+from .models import Blogger, Blog_post, Likes_dislikes, Comment
 
 # Register your models here.
 
@@ -21,3 +21,4 @@ class Blog_postAdmin(admin.ModelAdmin):
 
 admin.site.register(Blog_post, Blog_postAdmin)
 admin.site.register(Likes_dislikes)
+admin.site.register(Comment)

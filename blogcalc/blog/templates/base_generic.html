@@ -18,7 +18,6 @@
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'bloggers' %}">All bloggers</a></li>
           <li><a href="{% url 'posts' %}">All blog posts</a></li>
-          <li><a href="">All calculation posts</a></li>
           {% if user.is_authenticated %}
             <li><br>User: <a href="{% url 'blogger' user.id %}">{{ user.get_username }}</a>
             (<a href="{% url 'blogger_update' user.id %}">edit</a>)</li>

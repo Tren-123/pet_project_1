@@ -1,17 +1,19 @@
+from re import A
 from django.shortcuts import render, get_object_or_404
 from .blog_services import get_query_with_new_n_bloggers, \
                          get_query_with_new_n_blog_posts, \
                          get_query_for_all_bloggers, \
                          get_query_for_all_posts, \
-                         get_total_like, get_total_dislike
+                         get_total_like, get_total_dislike, \
+                         get_all_comments_for_blog_post   
                         
 from django.views import generic
 from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.models import User
-from .models import Blog_post, Blogger, Likes_dislikes
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.views.generic.edit import CreateView, UpdateView
+from .models import Blog_post, Blogger, Likes_dislikes, Comment
+from django.http import HttpResponseRedirect, Http404
+from django.urls import reverse, reverse_lazy
+from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm, BloggerForm, CreateUserForm
@@ -51,14 +53,16 @@ class BloggerDetailView(generic.DetailView, MultipleObjectMixin):
         return context
     paginate_by = 10
 
-class BlogPostDetailView(generic.DetailView):
+class BlogPostDetailView(generic.DetailView, MultipleObjectMixin):
     model = Blog_post
     template_name = "blog_post_detail_view.html"
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        object_list = get_all_comments_for_blog_post(self.object.id)
+        context = super(BlogPostDetailView, self).get_context_data(object_list=object_list, **kwargs)
         context["total_likes"] = get_total_like(self.object.id)
         context["total_dislikes"] = get_total_dislike(self.object.id)
         return context
+
 
 def LikeView(request, pk):
     if request.user.is_authenticated:
@@ -143,3 +147,21 @@ def NewUserCreate(request, *args, **kwargs):
     else:
         form = CreateUserForm()
     return render(request, 'blogger_create_view.html', {'form': form})
+
+
+def NewComment(request, pk, blogger_id):
+    if request.user.is_authenticated:
+        new_comment = Comment(content=request.POST.get("comment_text"), blog_post_id = pk, blogger_id = request.user.id)
+        new_comment.save()
+    return HttpResponseRedirect(reverse("post", args=[str(pk)]))
+
+class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Blog_post
+    template_name = "blog_post_delete_view.html"
+    def get_success_url(self):
+        return reverse('blogger', kwargs={'pk': self.object.blogger_id})
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.blogger_id != self.request.user.id:
+            raise Http404("You are not allowed to delete this Post")
+        return super(BlogPostDeleteView, self).dispatch(request, *args, **kwargs)

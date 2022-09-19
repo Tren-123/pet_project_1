@@ -70,3 +70,16 @@ class Likes_dislikes(models.Model):
     def __str__(self):
         """ String for representing the Model object. """
         return f"{self.blog_post}, {self.blogger}, {self.get_like_dislike_display()}"
+
+
+class Comment(models.Model):
+    """ Model representing comment to blog_post by blogger """
+    content = models.TextField(help_text="Enter your comment here")
+    date_of_origin = models.DateTimeField(auto_now_add=True)
+    date_of_update = models.DateTimeField(auto_now=True)
+    blogger = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    blog_post = models.ForeignKey(Blog_post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """ String for representing the Model object. """
+        return f"{self.blogger}, {str(self.date_of_origin)[0:19]}"

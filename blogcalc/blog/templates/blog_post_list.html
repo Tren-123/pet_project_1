@@ -5,8 +5,13 @@
   {% if object_list %}
   <ul>
     {% for post in object_list %}
+    {% if post.blogger_id %}
     <li><a href="{% url 'post' post.id %}"> {{ post.title }}</a>, {{ post.date_of_origin }}, 
         (<a href="{% url 'blogger' post.blogger_id %}"> {{ post.blogger }}</a>) </li>
+      {% else %}
+      <li><a href="{% url 'post' post.id %}"> {{ post.title }}</a>, {{ post.date_of_origin }}, 
+        ({{ post.blogger }}) </li>
+      {% endif %}
     {% endfor %}
     {% endif %}
     <div class="pagination">
