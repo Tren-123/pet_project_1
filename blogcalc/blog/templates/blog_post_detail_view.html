@@ -25,18 +25,20 @@
 
   <hr>
   <br>
-  <form action="{% url 'like_post' blog_post.pk %}" method="POST">
+  <div class="lefted-form">
+  <form action="{% url 'like_post' blog_post.pk %}" method="POST" class="hform">
     {% csrf_token %}
     <button type="submit", name="post_id", 
     value="{{ blog_post.id }}", class="btn btn-primary btn-sm">Like</button> - {{ total_likes }} like{{ total_likes|pluralize }}
   </form>
-  <br>
-  <form action="{% url 'dislike_post' blog_post.pk %}" method="POST">
+
+  <form action="{% url 'dislike_post' blog_post.pk %}" method="POST" class="hform">
     {% csrf_token %}
     <button type="submit", name="post_id", 
     value="{{ blog_post.id }}", class="btn btn-primary btn-sm">Dislike</button> - {{ total_dislikes }} dislike{{ total_dislikes|pluralize }}
   </form>
-  <hr>
+  </div>
+  <br><hr>
   <h4>Comments</h4>
   <div style="margin-left:20px;margin-top:20px">
     {% if object_list %}

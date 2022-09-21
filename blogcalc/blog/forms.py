@@ -12,7 +12,7 @@ class UserForm(ModelForm):
 class BloggerForm(ModelForm):
     class Meta:
         model = Blogger
-        fields = ["date_of_birth", "short_bio"]
+        fields = ["date_of_birth", "short_bio", "avatar"]
 
 
 class CreateUserForm(forms.Form):

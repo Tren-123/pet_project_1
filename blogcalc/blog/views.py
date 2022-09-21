@@ -18,6 +18,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm, BloggerForm, CreateUserForm
 from django.contrib.auth import authenticate, login
+from django import forms
 
 
 def index(request):
@@ -95,6 +96,14 @@ class BlogPostCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.blogger = self.request.user
         return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+
+        form = super(BlogPostCreate, self).get_form(form_class)
+        form.fields['title'].widget = forms.TextInput(attrs={'autocomplete': 'off'})
+        return form
     
 class BloggerUpdate(LoginRequiredMixin, generic.TemplateView):
     template_name = "blogger_update_view.html"
@@ -114,7 +123,7 @@ class BloggerUpdate(LoginRequiredMixin, generic.TemplateView):
         # retrieve the Blogger model instance based on authenticated user id
         blogger = get_object_or_404(Blogger, user_id=self.request.user.id)
         # create a BloggerForm based on blogger and form data
-        blogger_form = BloggerForm(instance=blogger, data=request.POST)
+        blogger_form = BloggerForm(instance=blogger, data=request.POST, files=request.FILES)
         # if the save_user button is pressed
         if 'save_user_info' in request.POST:
             if user_form.is_bound and user_form.is_valid():
@@ -151,7 +160,7 @@ def NewUserCreate(request, *args, **kwargs):
 
 def NewComment(request, pk, blogger_id):
     if request.user.is_authenticated:
-        new_comment = Comment(content=request.POST.get("comment_text"), blog_post_id = pk, blogger_id = request.user.id)
+        new_comment = Comment(content=request.POST.get("comment_text"), blog_post_id = pk, blogger_id = blogger_id)
         new_comment.save()
     return HttpResponseRedirect(reverse("post", args=[str(pk)]))
 

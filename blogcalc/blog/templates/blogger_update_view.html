@@ -9,7 +9,7 @@
     </table>
     <button name="save_user_info">Save</button>
   </form>
-  <form action="" method="post">
+  <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
     {{ blogger_form }}

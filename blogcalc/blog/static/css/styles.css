@@ -3,3 +3,36 @@
     padding: 0;
     list-style: none;
 }
+.image-cropper {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    float:left;
+    border: 2px solid rgb(0, 0, 0);
+}
+.profile-pic {
+    display: inline;
+    margin: 0 auto;
+    margin-left: -25%;
+    height: 100%;
+    width: auto;
+}
+.lefted-form { 
+    display:block;
+    float: left;
+}
+form.hform { 
+    display:inline 
+}
+input[type=submit] { 
+    padding:4px 0 ; width:80px 
+}
+.blogger-info {
+    float:left;
+    margin-left: 20px;
+}
+.clr {
+    clear:both
+}

@@ -3,15 +3,22 @@
 {% block content %}
   <h1>{{ blogger.get_username }}</h1>
   <div style="margin-left:20px;margin-top:20px">
-  {% if blogger.first_name or  blogger.last_name  %}
+    {% if blogger.blogger.avatar %}
+    <div class="image-cropper">
+    <img src="{{ blogger.blogger.avatar.url }}" alt="Avatar" class="profile-pic">
+    </div>
+    {% endif %}
+    <div class="blogger-info">
+    {% if blogger.first_name or  blogger.last_name  %}
     Name: {{ blogger.last_name }} {{ blogger.first_name }}<br> 
-  {% endif %}
-  {% if blogger.blogger.date_of_birth %}
-    Date of birth: {{ blogger.blogger.date_of_birth }}<br> 
-  {% endif %}
-  {% if blogger.blogger.short_bio %}
-    Bio: {{ blogger.blogger.short_bio }} <br> 
-  {% endif %}
+    {% endif %}
+    {% if blogger.blogger.date_of_birth %}
+      Date of birth: {{ blogger.blogger.date_of_birth }}<br> 
+    {% endif %}
+    {% if blogger.blogger.short_bio %}
+      Bio: {{ blogger.blogger.short_bio }} <br> 
+    {% endif %}</div>
+<div class="clr"></div>
   </div>
   <p>
   <h4>Posts</h4>
