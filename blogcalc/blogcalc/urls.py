@@ -23,7 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', include('blog.urls')),
-    path('calculator/', include('calculator.urls')),
     path('', RedirectView.as_view(url="index/", permanent=True)),
     path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

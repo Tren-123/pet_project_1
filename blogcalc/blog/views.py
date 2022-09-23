@@ -174,3 +174,14 @@ class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
         if obj.blogger_id != self.request.user.id:
             raise Http404("You are not allowed to delete this Post")
         return super(BlogPostDeleteView, self).dispatch(request, *args, **kwargs)
+
+class BloggerDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = "blogger_delete_view.html"
+    def get_success_url(self):
+        return reverse('index')
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.id != self.request.user.id:
+            raise Http404("You are not allowed to delete this Blogger profile")
+        return super(BloggerDeleteView, self).dispatch(request, *args, **kwargs)

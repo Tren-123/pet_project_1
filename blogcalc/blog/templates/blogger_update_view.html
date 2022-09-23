@@ -2,6 +2,10 @@
 
 {% block content %}
   <h1>Update blogger info</h1>
+  <div class="lefted-form">If you want to delete your Blogger profile click:
+    <form action="{% url 'blogger_delete' user.id %}" method="GET" class="hform">
+    <button type="submit", name="delete_profile">Delete profile</button></form></div>
+  <div style="clear:both;"><br></div>
   <form action="" method="post">
     {% csrf_token %}
     <table>

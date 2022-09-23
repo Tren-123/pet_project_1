@@ -15,4 +15,5 @@ urlpatterns = [
     path("blogger/create", views.NewUserCreate, name="create_blogger"),
     path("post/<int:pk>/new_comment/<int:blogger_id>", views.NewComment, name="post_new_comment"),
     path("post/<int:pk>/delete", views.BlogPostDeleteView.as_view(), name="post_delete"),
+    path("blogger/<int:pk>/delete", views.BloggerDeleteView.as_view(), name="blogger_delete"),
     ]

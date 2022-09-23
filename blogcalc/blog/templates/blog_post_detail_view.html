@@ -13,7 +13,10 @@
   </div>
   {% if user.id == blog_post.blogger_id %}
   <div>
-    <div style="margin-left:20px;margin-top:20px"><a href="{% url 'post_delete' blog_post.id %}">Delete this post</a></div>
+    <div style="margin-left:20px;margin-top:20px">
+    <form action="{% url 'post_delete' blog_post.id %}" method="GET">
+      <button type="submit", name="delete">Delete this post</button>
+    </form></div>
   {% endif %}
   <p>
   <h4>{{ blog_post.title }}</h4>
