@@ -1,1 +1,1 @@
-web: gunicorn blogcalc.wsgi --log-file -
+web: sh -c 'cd pet_project_1 && gunicorn blogcalc.wsgi --log-file -'
